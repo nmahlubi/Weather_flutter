@@ -101,8 +101,8 @@ class MapString {
       case 'Party Sunny':
         iconPath = 'assets/icons/partly-sunny.png';
         break;
-      case 'Party Cloudy':
-        iconPath = 'assets/icons/partly-sunny@3x.png';
+      case 'Cloudy':
+        iconPath = 'assets/icons/clouds.png';
         break;
       case 'Heavy rain':
         iconPath = 'assets/icons/rain@3x.png';
@@ -111,13 +111,13 @@ class MapString {
         iconPath = 'assets/icons/rain@2x.png';
         break;
       default:
-        iconPath = 'assets/images/lighthouse.png';
+        iconPath = 'assets/icons/clouds.png';
         break;
     }
 
     return ColorFiltered(
       colorFilter: const ColorFilter.mode(
-        Colors.transparent,
+        Colors.grey,
         BlendMode.srcIn,
       ),
       child: Image.asset(

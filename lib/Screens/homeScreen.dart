@@ -5,7 +5,6 @@ import '../widgets/fadeIn.dart';
 import '../widgets/locationError.dart';
 import '../widgets/mainWeather.dart';
 import '../widgets/requestError.dart';
-import '../widgets/weatherDetail.dart';
 import '../widgets/sevenDayForecast.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -41,68 +40,83 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final themeContext = Theme.of(context);
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Consumer<WeatherProvider>(
-          builder: (context, weatherProv, _) {
-            if (weatherProv.isLocationError) {
-              return LocationError();
-            }
-            if (weatherProv.isRequestError) {
-              return RequestError();
-            }
-            return Column(
-              children: [
-                _isLoading || weatherProv.isLoading
-                    ? Expanded(
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: themeContext.primaryColor,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-                    : Expanded(
-                        child: PageView(
-                          children: [
-                            // First Page of the Page View
-                            RefreshIndicator(
-                              onRefresh: () async => _refreshData(context),
-                              child: ListView(
-                                padding: const EdgeInsets.all(10),
-                                shrinkWrap: true,
+          child: Consumer<WeatherProvider>(
+            builder: (context, weatherProv, _) {
+              if (weatherProv.isLocationError) {
+                return LocationError();
+              }
+              if (weatherProv.isRequestError) {
+                return RequestError();
+              }
+              return Column(
+                children: [
+                  _isLoading || weatherProv.isLoading
+                      ? Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: themeContext.primaryColor,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                      : Expanded(
+                    child: PageView(
+                      children: [
+                        RefreshIndicator(
+                          onRefresh: () async => _refreshData(context),
+                          child:
+                          LayoutBuilder(
+                            builder: (context, constraints) => SingleChildScrollView(
+                              child: Column(
                                 children: [
-                                  FadeIn(
-                                    curve: Curves.easeIn,
-                                    duration: Duration(milliseconds: 250),
-                                    child: MainWeather(),
+                                  Container(
+                                    height: constraints.maxHeight * .4,
+                                    alignment: Alignment.center,
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage("assets/images/karl-magnuson-I5GCrapVFdQ-unsplash.jpg"),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    child:  FadeIn(
+                                      curve: Curves.easeIn,
+                                      duration: const Duration(milliseconds: 250),
+                                      child: MainWeather(),
+                                    ),
                                   ),
-                                  FadeIn(
-                                    curve: Curves.easeIn,
-                                    duration: Duration(milliseconds: 250),
-                                    child: SevenDayForecast(),
-                                  ),
-                                  const SizedBox(height: 16.0),
-                                  FadeIn(
-                                    curve: Curves.easeIn,
-                                    duration: Duration(milliseconds: 500),
-                                    child: WeatherDetail(),
-                                  ),
+                                  Container(
+                                    height: constraints.maxHeight, // will get by column
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                      ),
+                                    ),
+                                    child:  FadeIn(
+                                      curve: Curves.easeIn,
+                                      duration: Duration(milliseconds: 250),
+                                      child: SevenDayForecast(),
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
-                            // Second Page of the Page View
-
-                          ],
+                          ),
                         ),
-                      ),
-              ],
-            );
-          },
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
-      ),
+
+
     );
   }
 }

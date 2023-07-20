@@ -9,6 +9,7 @@ class SevenDayForecast extends StatelessWidget {
   Widget dailyWidget(dynamic weather, BuildContext context) {
     final dayOfWeek = DateFormat('EEE').format(weather.date);
     return Container(
+      color:Colors.white,
       margin: EdgeInsets.symmetric(horizontal: 7),
       child: Column(
         children: [
@@ -54,49 +55,11 @@ class SevenDayForecast extends StatelessWidget {
           child: Material(
             elevation: 5,
             borderRadius: BorderRadius.circular(15),
-            color: Colors.grey,
+            color: Colors.white,
             child: ListView(
               padding: const EdgeInsets.all(25.0),
               shrinkWrap: true,
               children: [
-                Consumer<WeatherProvider>(builder: (context, weatherProv, _) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Today',
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                          ),
-                          Text(
-                            '${weatherProv.weather.temp.toStringAsFixed(1)}°',
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          MapString.mapInputToWeather(
-                            context,
-                            '${weatherProv.weather.currently}',
-                          )
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: MapString.mapStringToIcon(
-                          context,
-                          '${weatherProv.weather.currently}',
-                          45,
-
-                        ),
-                      ),
-                    ],
-                  );
-                }),
                 SizedBox(height: 15),
                 Consumer<WeatherProvider>(builder: (context, weatherProv, _) {
                   return SingleChildScrollView(
